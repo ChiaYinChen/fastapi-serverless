@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.12
+    hooks:
+      - id: uv-lock
+      - id: uv-export
+        args: [
+          "--frozen",
+          "--format", "requirements.txt",
+          "--output-file", "requirements-prod.txt",
+          "--no-dev",
+          "--no-hashes",
+          "--quiet"
+        ]
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format app
+        language: system
+        types: [python]
